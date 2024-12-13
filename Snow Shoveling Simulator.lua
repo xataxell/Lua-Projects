@@ -1,5 +1,4 @@
--- No autosell, just an autofarm
-local ToolName = 'Plastic Shovel' -- Your shovel's name
+local ToolName = 'Plastic Shovel'
 local env = getgenv()
 env.Autofarm = {
     Enabled = true
@@ -22,7 +21,7 @@ local function gettool()
         tool = getplayer().Backpack[ToolName]
         tool.Parent = getcharacter()
         return tool
-    else
+    elseif getcharacter():FindFirstChild(ToolName) then
         return getcharacter()[ToolName]
     end
 end
