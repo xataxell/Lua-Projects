@@ -1,6 +1,6 @@
 local env = getgenv()
 env.Autofarm = {
-    ToolName = 'Vacuum',
+    ToolName = 'Snow Blower',
     Enabled = true
 }
 
@@ -53,6 +53,8 @@ local function getargs()
         return {[1] = getsnow(), [2] = getsnow(), [3] = getsnow(), [4] = getsnow()}
     elseif ToolName == 'Vacuum' then
         return {[1] = getsnow(), [2] = getsnow(), [3] = getsnow(), [4] = getsnow()}
+    elseif ToolName == 'Snow Blower' then
+        return {[1] = getsnow(), [2] = getsnow(), [3] = getsnow(), [4] = getsnow(), [5] = getsnow()}
     end
 end
 
