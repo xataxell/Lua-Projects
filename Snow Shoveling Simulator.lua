@@ -1,6 +1,6 @@
-local ToolName = 'Plastic Shovel'
 local env = getgenv()
 env.Autofarm = {
+    ToolName = 'Plastic Shovel',
     Enabled = true
 }
 
@@ -17,6 +17,7 @@ local function gethrp()
 end
 
 local function gettool()
+    local ToolName = env.Autofarm.ToolName
     if getplayer().Backpack:FindFirstChild(ToolName) then
         tool = getplayer().Backpack[ToolName]
         tool.Parent = getcharacter()
