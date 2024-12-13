@@ -35,6 +35,6 @@ local function getsnow()
     end
 end
 
-while env.Autofarm.Enabled and task.wait(.1) do
+while env.Autofarm.Enabled and task.wait(.01) do
     game:GetService("ReplicatedStorage").Modules.Network.RemoteEvent:FireServer('Shovel', gettool(), {[1] = getsnow()})
 end
