@@ -58,4 +58,10 @@ end
 
 while env.Autofarm.Enabled and task.wait(.01) do
     game:GetService("ReplicatedStorage").Modules.Network.RemoteEvent:FireServer('Shovel', gettool(), getargs())
+    
+    if getplayer():GetAttribute('Storage') == getplayer():GetAttribute('MaxStorage') then
+        game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(497.871368, 15.747962, -73.9140854, 0.00942997914, 8.11732725e-09, -0.999955535, 1.31579085e-08, 1, 8.2417726e-09, 0.999955535, -1.32350433e-08, 0.00942997914)
+        task.wait(.1)
+        game:GetService("ReplicatedStorage").Modules.Network.RemoteEvent:FireServer('SellSnow', 'Frosty')
+    end
 end
