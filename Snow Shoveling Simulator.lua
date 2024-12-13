@@ -1,6 +1,6 @@
 local env = getgenv()
 env.Autofarm = {
-    ToolName = 'Snow Blower',
+    ToolName = 'Plastic Shovel',
     Enabled = true
 }
 
