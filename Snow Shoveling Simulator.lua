@@ -35,6 +35,27 @@ local function getsnow()
     end
 end
 
+local function getargs()
+    local ToolName = env.Autofarm.ToolName
+    if ToolName == 'Plastic Shovel' then
+        return {[1] = getsnow()}
+    elseif ToolName == 'Small Push Shovel' then
+        return {[1] = getsnow()}
+    elseif ToolName == 'Metal Shovel' then
+        return {[1] = getsnow(), [2] = getsnow()}
+    elseif ToolName == 'Large Push Shovel' then
+        return {[1] = getsnow(), [2] = getsnow()}
+    elseif ToolName == 'Thermal Pad' then
+        return {[1] = getsnow(), [2] = getsnow(), [3] = getsnow()}
+    elseif ToolName == 'Push Blower' then
+        return {[1] = getsnow(), [2] = getsnow(), [3] = getsnow()}
+    elseif ToolName == 'Flame Thrower' then
+        return {[1] = getsnow(), [2] = getsnow(), [3] = getsnow(), [4] = getsnow()}
+    elseif ToolName == 'Vacuum' then
+        return {[1] = getsnow(), [2] = getsnow(), [3] = getsnow(), [4] = getsnow()}
+    end
+end
+
 while env.Autofarm.Enabled and task.wait(.01) do
-    game:GetService("ReplicatedStorage").Modules.Network.RemoteEvent:FireServer('Shovel', gettool(), {[1] = getsnow()})
+    game:GetService("ReplicatedStorage").Modules.Network.RemoteEvent:FireServer('Shovel', gettool(), getargs())
 end
