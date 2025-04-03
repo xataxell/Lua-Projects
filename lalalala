@@ -247,16 +247,6 @@ local FontVariable = RegisterFont('Font Name', 0, 'normal', {
 	Font = crypt.base64.decode('base64data')
 })
 ]]--
-Drawing.Font.new('Proggy Clean', ProggyClean)
-Drawing.Font.new('Arial', Arial)
-Drawing.Font.new('Arial Light', ArialLight)
-Drawing.Font.new('Barcode', Barcode)
-Drawing.Font.new('Minecraft', Minecraft)
-Drawing.Font.new('VCR OSD MONO', VCROSDMONO)
-Drawing.Font.new('Minecraftia', Minecraftia)
-Drawing.Font.new('Upheaval', Upheaval)
-Drawing.Font.new('Pixellari', Pixellari)
-Drawing.Font.new('Minecraftory', Minecraftory)
 
 local DrawingFonts = {
 	UI = 0,
