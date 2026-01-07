@@ -1,0 +1,254 @@
+local ReGui = loadstring(game:HttpGet('https://raw.githubusercontent.com/xataxell/Immediate-Mode-Graphical-User-Interface/refs/heads/main/ReGui.lua'))()
+local RunService = game:GetService('RunService')
+ReGui:DefineTheme('Cherry', {
+	TitleAlign = Enum.TextXAlignment.Center,
+	TextDisabled = Color3.fromRGB(120, 100, 120),
+	Text = Color3.fromRGB(200, 180, 200),
+	
+	FrameBg = Color3.fromRGB(25, 20, 25),
+	FrameBgTransparency = 0.4,
+	FrameBgActive = Color3.fromRGB(120, 100, 120),
+	FrameBgTransparencyActive = 0.4,
+	
+	CheckMark = Color3.fromRGB(150, 100, 150),
+	SliderGrab = Color3.fromRGB(150, 100, 150),
+	ButtonsBg = Color3.fromRGB(150, 100, 150),
+	CollapsingHeaderBg = Color3.fromRGB(150, 100, 150),
+	CollapsingHeaderText = Color3.fromRGB(200, 180, 200),
+	RadioButtonHoveredBg = Color3.fromRGB(150, 100, 150),
+	
+	WindowBg = Color3.fromRGB(35, 30, 35),
+	TitleBarBg = Color3.fromRGB(35, 30, 35),
+	TitleBarBgActive = Color3.fromRGB(50, 45, 50),
+	
+	Border = Color3.fromRGB(50, 45, 50),
+	ResizeGrab = Color3.fromRGB(50, 45, 50),
+	RegionBgTransparency = 1,
+})
+ReGui:DefineElement('CloseButtonButton', {
+	Base = {
+		Text = 'Button',
+		DoubleClick = false,
+		Callback = EmptyFunction
+	},
+	Create = function(self, Config: Button): TextButton
+		--// Create button object
+		local Object = ReGui:InsertPrefab('Button', Config)
+		Object.Font = Enum.Font.Code
+		
+		local DoubleClick = Config.DoubleClick
+		
+		--// MouseEvents
+		ReGui:ConnectMouseEvent(Object, {
+			DoubleClick = DoubleClick,
+			Callback = function(...)
+				local Func = Config.Callback
+				return Func(Object, ...)
+			end,
+		})
+
+		return Object
+	end,
+})
+ReGui:DefineElement('Button', {
+	Base = {
+		Text = 'Button',
+		DoubleClick = false,
+		Callback = EmptyFunction
+	},
+	Create = function(self, Config: Button): TextButton
+		--// Create button object
+		local Object = ReGui:InsertPrefab('Button', Config)
+		Object.Font = Enum.Font.Code
+		
+		local DoubleClick = Config.DoubleClick
+		
+		--// MouseEvents
+		ReGui:ConnectMouseEvent(Object, {
+			DoubleClick = DoubleClick,
+			Callback = function(...)
+				local Func = Config.Callback
+				return Func(Object, ...)
+			end,
+		})
+
+		return Object
+	end,
+})
+ReGui:DefineElement('CloseButton', {
+	Base = {
+		Text = 'X',
+		PaddingTop = UDim.new(),
+		PaddingBottom = UDim.new(),
+		PaddingLeft = UDim.new(0, 2),
+		PaddingRight = UDim.new(0, 2),
+		ColorTag = 'TitleBarBg',
+		ElementStyle = 'Button',
+		Callback = EmptyFunction,
+	},
+	Create = ReGui.Elements.CloseButtonButton
+})
+ReGui:DefineElement("Section", {
+	Base = {
+		Scroll = false,
+		AutomaticSize = Enum.AutomaticSize.Y
+	},
+	Create = function(self, Config: Section)
+		local WindowClass = self.WindowClass
+
+		local Scroll = Config.Scroll
+		local Class = Scroll and "ScrollingCanvas" or "Canvas"
+
+		--// Create object
+		local Object = ReGui:InsertPrefab(Class, Config)
+
+		--// Content canvas
+		local Canvas = ReGui:MakeCanvas({
+			Element = Object,
+			WindowClass = WindowClass,
+			Class = Config
+		})
+
+		return Canvas, Object
+	end,
+})
+
+--// Vars
+local ReplicatedStorage = game:GetService('ReplicatedStorage')
+local Remotes = ReplicatedStorage.RemoteEvents
+local Collect = Remotes.CollectMoney
+local Players = game:GetService('Players')
+local LocalPlayer = Players.LocalPlayer
+local Connections = {}
+
+--// UI
+local Window = ReGui:Window({Title = '﷽', Theme = 'Cherry', NoClose = true, Size = UDim2.new(0, 600, 0, 400)}):Center()
+local LogoGroup = Window:List({UiPadding = 2, VerticalFlex = Enum.UIFlexAlignment.Fill})
+local Group = Window:List({UiPadding = 2, HorizontalFlex = Enum.UIFlexAlignment.Fill})
+Window.TitleBarCanvas:CloseButton({LayoutOrder = 5, Callback = function() for i,v in pairs(Connections) do v:Disconnect(); Connections[i] = nil end; Window:Close() end})
+
+local LogoRow = LogoGroup:List({
+    UiPadding = 0,
+    HorizontalFlex = Enum.UIFlexAlignment.Fill,
+    VerticalAlignment = Enum.VerticalAlignment.Center
+})
+
+local LogoContainer = LogoRow:List({
+    Border = false,
+    UiPadding = 0,
+    BorderColor = Window:GetThemeKey('Border'),
+    BorderThickness = 1,
+    AutomaticSize = Enum.AutomaticSize.None,
+    FlexMode = Enum.UIFlexMode.None,
+    Size = UDim2.new(0, 100, 0, 100),
+    CornerRadius = UDim.new(0, 5)
+})
+
+local Logo = LogoContainer:Image({
+    Image = ReGui.Icons.SpawnLocation,
+    Ratio = 1,
+    RatioAxis = Enum.DominantAxis.Width
+})
+
+local LogoContainer2 = LogoRow:List({
+    Border = false,
+    UiPadding = 50,
+    BorderColor = Window:GetThemeKey('Border'),
+    BorderThickness = 1,
+    AutomaticSize = Enum.AutomaticSize.None,
+    FlexMode = Enum.UIFlexMode.None,
+    Size = UDim2.new(0, 400, 0, 100),
+    CornerRadius = UDim.new(0, 5)
+})
+
+local Mangos = LogoContainer2:Label({
+    Text = 'Oh wow mango!',
+    TextXAlignment = Enum.TextXAlignment.Center
+})
+
+local TabsBar = Group:List({
+	Border = false,
+	UiPadding = 5,
+	BorderColor = Window:GetThemeKey('Border'),
+	BorderThickness = 1,
+	HorizontalFlex = Enum.UIFlexAlignment.Fill,
+	HorizontalAlignment = Enum.HorizontalAlignment.Center,
+	AutomaticSize = Enum.AutomaticSize.None,
+	FlexMode = Enum.UIFlexMode.None,
+	Size = UDim2.new(0, 100, 1, 0),
+	CornerRadius = UDim.new(0, 5)
+})
+local TabSelector = Group:TabSelector({
+	NoTabsBar = true,
+	Size = UDim2.fromScale(0.5, 1)
+})
+
+local function CreateTab(Name: string, Tooltip: string, Icon)
+	local Tab = TabSelector:CreateTab({
+		Name = Name
+	})
+
+	local List = Tab:List({
+		HorizontalFlex = Enum.UIFlexAlignment.Fill,
+		UiPadding = 1,
+		Spacing = 10
+	})
+	local Button = TabsBar:Button({
+		Text = Name,
+		Callback = function(self)
+			TabSelector:SetActiveTab(Tab)
+		end,
+	})
+	ReGui:SetItemTooltip(Button, function(Canvas) Canvas:Label({Text = Tooltip}) end)
+	return List
+end
+
+local function CreateSection(Parent, Title, Tooltip)
+	local Region = Parent:Section({
+		Border = true,
+		BorderColor = Window:GetThemeKey('Border'),
+		BorderSizePixel = 10,
+        BorderMode = Enum.BorderMode.Outline,
+        Transparency = .85,
+        BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	})
+	local text = Region:Label({
+		Text = Title
+	})
+    ReGui:SetItemTooltip(text, function(Canvas) Canvas:Label({Text = Tooltip}) end)
+	return Region
+end
+
+local Main = CreateTab('Main', 'Everything the cheat has to offer')
+local Settings = CreateTab('Settings', 'Cheat Configuration')
+
+local GeneralSection = CreateSection(Main, 'General', 'Everything goes here')
+GeneralSection:Separator()
+GeneralSection:Checkbox({Label = 'Disable tsunami collision', Callback = function(self, Value) 
+    if Value then
+        for i,v in workspace['ActiveTsunamis']:GetChildren() do
+            repeat task.wait() until v:FindFirstChild('Hitbox')
+            v.Hitbox.TouchInterest:Destroy()
+        end
+        DisableTsunami = workspace.DescendantAdded:Connect(function(item: Instance)
+            if item.Parent == workspace['ActiveTsunamis'] then
+                repeat task.wait() until item:FindFirstChild('Hitbox')
+                item.Hitbox.TouchInterest:Destroy()
+            end
+        end)
+        Connections['DisableTsunami'] = DisableTsunami
+    else
+        if Connections['DisableTsunami'] then
+            Connections['DisableTsunami']:Disconnect()
+        end
+    end
+end})
+GeneralSection:Button({Text = 'Collect all', Callback = function(self) 
+    for i,v in workspace['Bases']:GetChildren() do
+        if v:GetAttribute('Holder') == LocalPlayer.UserId then
+            for ii=1,#v['Slots']:GetChildren() do
+                Collect:FireServer('Slot'..ii)
+            end
+        end
+    end
+end})
